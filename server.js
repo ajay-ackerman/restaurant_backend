@@ -1,47 +1,27 @@
-const express = require('express')
-const mongoose = require('mongoose')
+const express = require('express');
+// const mongoose = require('mongoose');
+const userRoutes = require('./routes/userRoutes');
+const restaurantRoutes = require('./routes/restaurantRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
+const { connectDB } = require('./connection');
 
+//connection
+connectDB('mongodb://127.0.0.1:27017/hotel');
 const app = express()
-// app.use(require('json'))
 PORT = 8000
 
 app.use(express.json());
+app.use("/users",userRoutes);
+app.use("/restaurants",restaurantRoutes);
+app.use("/reservations",reservationRoutes);
+
+//middle wear
+// app.use(express.urlencoded({extended: false}));
 
 
-//connection
-mongoose.connect('mongodb://127.0.0.1:27017/hotel')
-.then(()=>console.log(`Connected to MongoDB`))
-.catch((err) => console.log(err));
+
 
 //Schema
 app.listen(PORT , ()=>console.log("running on port "+PORT))
 
-const userSchema = new mongoose.Schema({
-    firstName :{
-        type:String,
-        required:true,
-
-    },
-    lastName:{
-        type: String,
-    },
-    email:{
-        type: String,
-        required: true,
-        unique: true,
-    },
-    
-},{timestamps: true});
-
-const User = mongoose.model("user",userSchema);
-
-app.post("/add",async (req,res)=>{
-    const body = req.body
-    const result =  await User.create({
-        email: body.email,
-        firstName: body.firstName,
-        lastName: body.lastName,
-        })
-        console.log(result);
-        return res.status(201).json({msg: "success"});
-})
+//routes 
