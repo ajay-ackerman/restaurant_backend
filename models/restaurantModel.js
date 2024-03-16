@@ -1,3 +1,4 @@
+// restaurantModel.js
 const mongoose = require('mongoose');
 
 const menuSchema = new mongoose.Schema({
@@ -15,8 +16,11 @@ const reservationSchema = new mongoose.Schema({
 
 const restaurantSchema = new mongoose.Schema({
   name: String,
+  address: String, // Adding address field
   tables: Number,
-  menu: [menuSchema], // Adding menu field
+  menu: [menuSchema],
   reservations: [reservationSchema]
 });
+
+const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 module.exports = Restaurant;

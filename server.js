@@ -4,6 +4,7 @@ const userRoutes = require('./routes/userRoutes');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
 const { connectDB } = require('./connection');
+const reservationCleanup = require('./utils/reservationCleanup');
 
 //connection
 connectDB('mongodb://127.0.0.1:27017/hotel');
@@ -18,7 +19,8 @@ app.use("/reservations",reservationRoutes);
 //middle wear
 // app.use(express.urlencoded({extended: false}));
 
-
+// Start reservation cleanup job
+reservationCleanup.start();
 
 
 //Schema
