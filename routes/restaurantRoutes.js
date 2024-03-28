@@ -9,6 +9,11 @@ router.get('/', restaurantController.getAllRestaurants)
 .put('/:id', restaurantController.updateRestaurant)
 .delete('/:id', restaurantController.deleteRestaurant)
 .post('/:id/menu', restaurantController.addMenuItem)
-.delete('/:restaurantId/menu/:menuItemId', restaurantController.deleteMenuItem);
+.delete('/:restaurantId/menu/:menuItemId', restaurantController.deleteMenuItem)
+.get('/rank', restaurantController.rankRestaurants)
+.post('/rate', restaurantController.rateRestaurant)
+.post('/floors', restaurantController.createFloor)
+.get('/floors', restaurantController.getAllFloors)
+.patch('/restaurants/:restaurantId/floors/:floorId/tables/:tableId/reserve', restaurantController.updateTableReservation);
 
 module.exports = router;

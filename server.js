@@ -11,6 +11,7 @@ connectDB('mongodb://127.0.0.1:27017/hotel');
 const app = express()
 PORT = 8000
 
+//routes 
 app.use(express.json());
 app.use("/users",userRoutes);
 app.use("/restaurants",restaurantRoutes);
@@ -25,5 +26,3 @@ reservationCleanup.start();
 
 //Schema
 app.listen(PORT , ()=>console.log("running on port "+PORT))
-
-//routes 
