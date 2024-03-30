@@ -17,12 +17,12 @@ const reservationSchema = new mongoose.Schema({
 const tableSchema = new mongoose.Schema({
   // tableId: { type: String, unique: true },
   // number: Number,
-  numberOfSeats: Number,
   isReserved: { type: Boolean, default: false }
 });
 
 const floorSchema = new mongoose.Schema({
   floorNumber: Number,
+  numberOfSeats: Number,
   tables: [tableSchema]
 });
 
@@ -38,12 +38,15 @@ const floorSchema = new mongoose.Schema({
 const restaurantSchema = new mongoose.Schema({
   name: String,
   address: String,
+  email: String,
+  password: String,
+  role: { type: String, enum: ['restaurant_owner', 'admin'], default: 'restaurant_owner' },
   floors: [floorSchema], // Reference to floors collection
   menu: [menuSchema],
   ratings: [{ user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, rating: Number }], // Update ratings schema
   averageRating: Number,
   reservations: [reservationSchema]
-});
+},{timestamps:true});
 
 
 

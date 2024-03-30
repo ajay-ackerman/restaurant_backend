@@ -11,6 +11,8 @@ const reservationSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
+  password: String,
+  role: { type: String, enum: ['user', 'admin'], default: 'user' }, // Add role field
   reservations: [reservationSchema] // Adding reservations field
 },{timeStamp: true});
 

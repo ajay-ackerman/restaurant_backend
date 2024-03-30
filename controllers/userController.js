@@ -1,4 +1,5 @@
 // userController.js
+const { request } = require('express');
 const User = require('../models/userModel');
 
 exports.createUser = async (req, res) => {
@@ -45,7 +46,9 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
+    console.log("=========="+req);
     const { id } = req.params;
+    console.log(id);
     await User.findByIdAndDelete(id);
     res.json({ message: 'User deleted successfully' });
   } catch (err) {

@@ -6,6 +6,9 @@ const reservationRoutes = require('./routes/reservationRoutes');
 const { connectDB } = require('./connection');
 const reservationCleanup = require('./utils/reservationCleanup');
 
+
+require('dotenv').config();
+
 //connection
 connectDB('mongodb://127.0.0.1:27017/hotel');
 const app = express()
@@ -18,7 +21,7 @@ app.use("/restaurants",restaurantRoutes);
 app.use("/reservations",reservationRoutes);
 
 //middle wear
-// app.use(express.urlencoded({extended: false}));
+//  app.use(express.urlencoded({extended: false}));
 
 // Start reservation cleanup job
 reservationCleanup.start();

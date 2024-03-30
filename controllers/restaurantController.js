@@ -68,8 +68,8 @@ exports.deleteMenuItem = async (req, res) => {
 
 exports.createFloor = async (req, res) => {
   try {
-    const { floorNumber, tables } = req.body;
-    const floor = new Floor({ floorNumber, tables });
+    const { numberOfSeats,floorNumber, tables } = req.body;
+    const floor = new Floor({ numberOfSeats,floorNumber, tables });
     await floor.save();
     res.status(201).json(floor);
   } catch (err) {
@@ -88,8 +88,8 @@ exports.getAllFloors = async (req, res) => {
 };
 
 exports.updateTable = async (req, res) => {
-  const { floorId, tableId } = req.params;
-  const { numberOfSeats, isReserved } = req.body;
+  const { floorId,tableId } = req.params;
+  const {  isReserved } = req.body;
 
   try {
     const floor = await Floor.findById(floorId);
@@ -103,10 +103,6 @@ exports.updateTable = async (req, res) => {
 
     if (!table) {
       return res.status(404).json({ message: 'Table not found in the floor' });
-    }
-
-    if (numberOfSeats !== undefined) {
-      table.numberOfSeats = numberOfSeats;
     }
     if (isReserved !== undefined) {
       table.isReserved = isReserved;
