@@ -55,3 +55,33 @@ exports.deleteUser = async (req, res) => {
     res.status(400).send(err);
   }
 };
+
+
+//favoutite section
+exports.addToFavorites = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const restaurantId = req.params.restaurantId;
+
+    // Add the restaurant to the user's favorites
+    const user = await User.findByIdAndUpdate(userId, { $addToSet: { fav: restaurantId } }, { new: true });
+
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.removeFromFavorites = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const restaurantId = req.params.restaurantId;
+
+    // Remove the restaurant from the user's favorites
+    const user = await User.findByIdAndUpdate(userId, { $pull: { fav: restaurantId } }, { new: true });
+
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

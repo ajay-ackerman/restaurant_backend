@@ -1,6 +1,7 @@
 // restaurantModel.js
 const mongoose = require('mongoose');
 
+
 const menuSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -40,11 +41,16 @@ const restaurantSchema = new mongoose.Schema({
   address: String,
   email: String,
   password: String,
+  phoneNumber: String,
+
   role: { type: String, enum: ['restaurant_owner', 'admin'], default: 'restaurant_owner' },
   floors: [floorSchema], // Reference to floors collection
   menu: [menuSchema],
+  image: String,
+
   ratings: [{ user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, rating: Number }], // Update ratings schema
   averageRating: Number,
+
   reservations: [reservationSchema]
 },{timestamps:true});
 
@@ -52,5 +58,6 @@ const restaurantSchema = new mongoose.Schema({
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 const  Floor = mongoose.model('Floor', floorSchema);
-module.exports = { Restaurant, Floor };
+const Table =  mongoose.model('Table', tableSchema)
+module.exports = { Restaurant, Floor , Table };
 // module.exports = Restaurant;

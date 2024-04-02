@@ -10,6 +10,8 @@ router.get('/', authenticateUser,userController.getAllUsers)
 .post('/signup', signUp)
 .post('/signin', signIn)
 .put('/:id',authenticateUser,authorizeUser, userController.updateUser)
-.delete('/:id', authenticateUser,authorizeUser,userController.deleteUser);
+.delete('/:id', authenticateUser,authorizeUser,userController.deleteUser)
+.post('/:userId/fav/:restaurantId', authenticateUser,authorizeUser, userController.addToFavorites)
+.delete('/:userId/fav/:restaurantId', authenticateUser,authorizeUser, userController.removeFromFavorites);;
 
 module.exports = router;
