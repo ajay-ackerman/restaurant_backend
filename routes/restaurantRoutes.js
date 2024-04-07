@@ -18,6 +18,6 @@ router.post('/signup',restaurantSignUp)
 .post('/rate', authenticateUser,authorizeUser,restaurantController.rateRestaurant)
 .post('/floors',authenticateUser,authorizeRestaurantOwner, restaurantController.createFloor)
 .get('/floors',authenticateUser, restaurantController.getAllFloors)
-.patch('/restaurants/:restaurantId/floors/:floorId/tables/:tableId/reserve',authenticateUser, restaurantController.updateTableReservation);
+.patch('/restaurants/:restaurantId/:floorNumber/tables/:tableId/reserve',authenticateUser, restaurantController.updateTableReservation);
 
 module.exports = router;

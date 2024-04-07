@@ -1,5 +1,5 @@
 // restaurantController.js
-const {Restaurant,Floor} = require('../models/restaurantModel');
+const {Restaurant,Floor,Table} = require('../models/restaurantModel');
 // const Floor = require('../models/restaurantModel');
 
 
@@ -87,66 +87,98 @@ exports.getAllFloors = async (req, res) => {
   }
 };
 
-exports.updateTable = async (req, res) => {
-  const { floorId,tableId } = req.params;
-  const {  isReserved } = req.body;
+// exports.updateTable = async (req, res) => {
+//   const { floorId,tableId } = req.params;
+//   const {  isReserved } = req.body;
 
-  try {
-    const floor = await Floor.findById(floorId);
+//   try {
+//     const floor = await Floor.findById(floorId);
 
-    if (!floor) {
-      return res.status(404).json({ message: 'Floor not found' });
-    }
+//     if (!floor) {
+//       return res.status(404).json({ message: 'Floor not found' });
+//     }
 
-    // const table = floor.tables.id(tableId);
-    const table = floor.tables.findById(tableId);
+//     // const table = floor.tables.id(tableId);
+//     const table = floor.tables.findById(tableId);
 
-    if (!table) {
-      return res.status(404).json({ message: 'Table not found in the floor' });
-    }
-    if (isReserved !== undefined) {
-      table.isReserved = isReserved;
-    }
+//     if (!table) {
+//       return res.status(404).json({ message: 'Table not found in the floor' });
+//     }
+//     if (isReserved !== undefined) {
+//       table.isReserved = isReserved;
+//     }
 
-    await floor.save();
+//     await floor.save();
 
-    res.json(floor);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+//     res.json(floor);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
 
 
 
 exports.updateTableReservation = async (req, res) => {
-  const { restaurantId, floorId, tableId } = req.params;
-  const { isReserved } = req.body;
 
   try {
-    // Find the floor by restaurantId and floorId
-    const floor = await Floor.findOne({ _id: floorId, restaurant: restaurantId });
+    const { restaurantId, floorNumber, tableId } = req.params;
+    const { isReserved } = req.body;
 
+    // Check if the restaurant exists
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+
+    // Find the floor
+    const floor = restaurant.floors.find(floor => floor.floorNumber === floorNumber);
     if (!floor) {
       return res.status(404).json({ message: 'Floor not found' });
     }
 
-    // Find the table by tableId
+    // Find the table
     const table = floor.tables.id(tableId);
-
     if (!table) {
       return res.status(404).json({ message: 'Table not found' });
     }
 
-    // Update the reservation status
+    // Update the table status
     table.isReserved = isReserved;
+    await restaurant.save();
 
-    // Save the updated floor
-    await floor.save();
-
-    res.json(floor);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(200).json({ message: 'Table status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
+  ///////////////////////////////////////////////////////
+  // const { restaurantId, floorId, tableId } = req.params;
+  // const { isReserved } = req.body;
+
+  // try {
+  //   // Find the floor by restaurantId and floorId
+  //   const floor = await Floor.findOne({ _id: floorId, restaurant: restaurantId });
+
+  //   if (!floor) {
+  //     return res.status(404).json({ message: 'Floor not found' });
+  //   }
+
+  //   // Find the table by tableId
+  //   const table = floor.tables.id(tableId);
+
+  //   if (!table) {
+  //     return res.status(404).json({ message: 'Table not found' });
+  //   }
+
+  //   // Update the reservation status
+  //   table.isReserved = isReserved;
+
+  //   // Save the updated floor
+  //   await table.save();
+
+  //   res.json(floor);
+  // } catch (err) {
+  //   res.status(500).json({ message: err.message });
+  // }
 };
 
 
